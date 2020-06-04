@@ -6,8 +6,8 @@
 // @homepageURL	 https://github.com/N0D4N/MalRamp
 // @source		 https://github.com/N0D4N/MalRamp
 // @supportURL	 https://github.com/N0D4N/MalRamp/issues
-// @updateURL	 https://github.com/N0D4N/MalRamp/raw/auto-open-script-test/MalRamp.user.js
-// @downloadURL	 https://github.com/N0D4N/MalRamp/raw/auto-open-script-test/MalRamp.user.js
+// @updateURL	 https://github.com/N0D4N/MalRamp/raw/master/MalRamp.user.js
+// @downloadURL	 https://github.com/N0D4N/MalRamp/raw/master/MalRamp.user.js
 // @include      https://myanimelist.net/animelist/*
 // @include      https://myanimelist.net/mangalist/*
 // ==/UserScript==
