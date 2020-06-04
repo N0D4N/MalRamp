@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Mal random anime/manga picker
+// @name         MyAnimeList random anime/manga picker.
 // @version      1.0
-// @description  Get's random entry from your anime/manga list on MyAnimeList.net and opens it in new window.
+// @description  Get random entry from your anime/manga list on MyAnimeList.net and open it in new window.
 // @author       N0D4N
 // @include      https://myanimelist.net/animelist/*
 // @include      https://myanimelist.net/mangalist/*
@@ -14,7 +14,7 @@
 	/// Create button on which user will click and which will open random anime/manga from current list
 	function createButton(){
 		const RanElem = document.createElement('a');
-		RanElem.id = 'MREButton';
+		RanElem.id = 'MalRampButton';
 		RanElem.style.cursor = 'pointer';
 		RanElem.addEventListener("click", async () => await rfunc(), false);
 		return RanElem;
@@ -31,28 +31,29 @@
 	}
 	else{
 		const ranButton = createButton();
-		ranButton.className = 'icon-menu icon';
+		ranButton.className = 'icon-menu';
 		const color = window.getComputedStyle(document.getElementsByClassName('icon')[1], null).fill;
-		ranButton.setAttribute('style', 'cursor:pointer;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;color:' + color + ';');
+		ranButton.setAttribute('style', '-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;color:' + color + ';');
 		const ranButtonIcon = document.createElement('span'); // Icon that will be displayed on floating menu
-		ranButtonIcon.id = 'MREButtonIcon';
-		ranButtonIcon.setAttribute('style', 'position:absolute;font-size:20px;font-family:fantasy;font-weight:bold;left:15px;top:12px;');
+		ranButtonIcon.id = 'MalRampButtonIcon';
+		ranButtonIcon.setAttribute('style', 'position:absolute;font-size:22px;font-family:fantasy;font-weight:bold;left:15px;top:12px;');
 		ranButtonIcon.innerHTML += 'R';
 		ranButton.appendChild(ranButtonIcon);
 		const ranButtonText = document.createElement('span'); // Text that will appear on hover
 		ranButtonText.className = 'text';
 		ranButtonText.innerHTML = 'Random';
+		ranButtonText.id = 'MalRampButtonText';
 		ranButton.appendChild(ranButtonText);
 		floatingMenu.appendChild(ranButton);
 	}
 
-	document.addEventListener("keydown", async function (hotkeyEvent){
-		if(hotkeyEvent.ctrlKey && hotkeyEvent.altKey && hotkeyEvent.key === 'r'){
+	document.addEventListener("keydown", async function (hotkeyEvent){ // Add hotkey 
+		if(hotkeyEvent.ctrlKey && hotkeyEvent.altKey && hotkeyEvent.key.toLowerCase() === 'r'){
 			await rfunc();
 		}
 	}, false);
 
-	/// Function that will be called everytime user clicks on button
+	/// Function that will be called every time user clicks on button
 	async function rfunc(){
 
 		/// Function that is used to get random link from the array of links
@@ -61,11 +62,7 @@
 		}
 
 		function sleep(milliseconds){
-			const date = Date.now();
-			let currentDate = null;
-			do{
-				currentDate = Date.now();
-			} while (currentDate - date < milliseconds);
+			return new Promise(resolve => setTimeout(resolve, milliseconds));
 		}
 
 		/// Gets random link from array and open it in new tab
@@ -84,7 +81,7 @@
 		/// instead of grabbing from html or querying to /load.json endpoint
 		function saveToTempStorage(links){
 			const tempStor = document.createElement('div');
-			tempStor.id = 'MRETempStorage';
+			tempStor.id = 'MalRampTempStorage';
 			tempStor.style.display = 'none';
 			tempStor.innerHTML = JSON.stringify(links);
 			document.body.appendChild(tempStor);
@@ -97,7 +94,7 @@
 		}
 
 		// Check if button was clicked before and links are saved in hidden div in json format
-		const tempStElem = document.getElementById('MRETempStorage');
+		const tempStElem = document.getElementById('MalRampTempStorage');
 		if(tempStElem !== null){
 			const links = JSON.parse(tempStElem.innerHTML);
 			const link = getRandomEntry(links);
@@ -111,7 +108,7 @@
 		// Add entries from the list on loaded page to array of links
 		if (isClassicDesign){
 			// Lists with all design are loaded on page with all entries in it
-			const entries = document.getElementsByClassName('animetitle');
+			const entries = document.getElementsByClassName('animetitle'); // Yes it is anime title even in mangalist
 			for(let i = 0; i < entries.length; i++){
 				links.push(entries[i].getAttribute('href'));
 			}
@@ -126,7 +123,7 @@
 			// This will query full list filtered by given status etc, by hitting https://myanimelist.net/animelist/{username}/load.json?{query}
 			//															  		  https://myanimelist.net/mangalist/{username}/load.json?{query}
 			if(links.length === 300){
-				console.log('MRE: 300+(?) entries in list querying to /load.json');
+				console.log('MalRamp: 300+(?) entries in list querying to /load.json');
 				const splitRes = window.location.href.split('?');
 
 				let query = "";
@@ -139,7 +136,6 @@
 				}
 
 				const loadJsonUrl = splitRes[0] + '/load.json' + query;
-
 				let toContinue;
 				const entityPrefix = splitRes[0].includes('manga') ? 'manga' : 'anime'; // Get the type of list
 
@@ -156,7 +152,7 @@
 					// MAL returns entries in list by chunks with the size of 300 so if amount of saved links is 300*x it's most likely that there are more entries in list
 					if(!(links.length % 300)){
 						toContinue = true;
-						sleep(500); // Add a bit of delay between requests
+						await sleep(500); // Add a bit of delay between requests
 					}
 				}while(toContinue);
 			}
