@@ -1,8 +1,13 @@
 // ==UserScript==
 // @name         MyAnimeList random anime/manga picker.
-// @version      1.0
+// @version      1.1
 // @description  Get random entry from your anime/manga list on MyAnimeList.net and open it in new window.
 // @author       N0D4N
+// @homepageURL	 https://github.com/N0D4N/MalRamp
+// @source		 https://github.com/N0D4N/MalRamp
+// @supportURL	 https://github.com/N0D4N/MalRamp/issues
+// @updateURL	 https://raw.githubusercontent.com/N0D4N/MalRamp/master/UserScript.js
+// @downloadURL	 https://raw.githubusercontent.com/N0D4N/MalRamp/master/UserScript.js
 // @include      https://myanimelist.net/animelist/*
 // @include      https://myanimelist.net/mangalist/*
 // ==/UserScript==
