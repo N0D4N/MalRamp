@@ -15,7 +15,7 @@ This userscript helps you to pick random anime or manga from user's list by simp
 
 2. Install browser extension for managing userscripts, the recommended one is [Tampermonkey](https://www.tampermonkey.net/), however, the other ones should work too.
 
-3. Copy the userscript from [userscript.js](/UserScript.js) and add it to your userscripts in extension.
+3. Click [here](https://github.com/N0D4N/MalRamp/raw/auto-open-script-test/MalRamp.user.js) and install script.
 
 # Usage
 If list has modern design, button will appear at the bottom of the floating menu on the left side and will look like **'R'** letter.
